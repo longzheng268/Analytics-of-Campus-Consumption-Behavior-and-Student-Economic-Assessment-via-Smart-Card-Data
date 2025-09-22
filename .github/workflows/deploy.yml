@@ -1,0 +1,56 @@
+name: Deploy Streamlit App
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Create deployment package
+      run: |
+        echo "Creating deployment package..."
+        tar -czf streamlit-app.tar.gz \
+          app.py \
+          requirements.txt \
+          core/ \
+          configs/ \
+          data/ \
+          README.md
+    
+    - name: Upload deployment artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: streamlit-campus-analytics
+        path: streamlit-app.tar.gz
+        retention-days: 30
+    
+    - name: Deployment Summary
+      run: |
+        echo "## 🚀 Deployment Summary" >> $GITHUB_STEP_SUMMARY
+        echo "### 📦 Artifact Created" >> $GITHUB_STEP_SUMMARY
+        echo "- **Name**: streamlit-campus-analytics" >> $GITHUB_STEP_SUMMARY
+        echo "- **Size**: $(du -h streamlit-app.tar.gz | cut -f1)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Retention**: 30 days" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 🛠️ Manual Deployment Steps" >> $GITHUB_STEP_SUMMARY
+        echo "1. Download the artifact from this workflow run" >> $GITHUB_STEP_SUMMARY
+        echo "2. Extract: \`tar -xzf streamlit-app.tar.gz\`" >> $GITHUB_STEP_SUMMARY
+        echo "3. Install dependencies: \`pip install -r requirements.txt\`" >> $GITHUB_STEP_SUMMARY
+        echo "4. Run app: \`streamlit run app.py\`" >> $GITHUB_STEP_SUMMARY
+        echo "5. Open browser: http://localhost:8501" >> $GITHUB_STEP_SUMMARY

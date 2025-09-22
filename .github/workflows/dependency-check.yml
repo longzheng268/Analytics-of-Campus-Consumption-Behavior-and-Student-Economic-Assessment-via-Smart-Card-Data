@@ -1,0 +1,48 @@
+name: 依赖更新检查
+
+on:
+  schedule:
+    # Run every Monday at 9:00 AM UTC (5:00 PM Beijing Time)
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  check-dependencies:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install pip-tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install pip-tools
+    
+    - name: Check for outdated packages
+      run: |
+        pip install -r requirements.txt
+        echo "## 📦 当前依赖包状态" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 已安装的包版本:" >> $GITHUB_STEP_SUMMARY
+        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        pip list --format=freeze | grep -E "(pandas|numpy|matplotlib|seaborn|scikit-learn|streamlit|plotly)" >> $GITHUB_STEP_SUMMARY
+        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 过时的包检查:" >> $GITHUB_STEP_SUMMARY
+        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        pip list --outdated --format=freeze | grep -E "(pandas|numpy|matplotlib|seaborn|scikit-learn|streamlit|plotly)" >> $GITHUB_STEP_SUMMARY || echo "所有关键依赖包都是最新的!" >> $GITHUB_STEP_SUMMARY
+        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+    
+    - name: Security vulnerability check
+      run: |
+        pip install safety
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 🔒 安全漏洞检查:" >> $GITHUB_STEP_SUMMARY
+        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        safety check --json || echo "发现安全漏洞，请检查上述输出" >> $GITHUB_STEP_SUMMARY
+        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY

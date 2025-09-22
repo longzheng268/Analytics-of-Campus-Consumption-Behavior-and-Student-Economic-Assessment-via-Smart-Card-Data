@@ -3,6 +3,7 @@
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.28%2B-red.svg)](https://streamlit.io/)
+[![CI/CD](https://github.com/longzheng268/Analytics-of-Campus-Consumption-Behavior-and-Student-Economic-Assessment-via-Smart-Card-Data/actions/workflows/ci.yml/badge.svg)](https://github.com/longzheng268/Analytics-of-Campus-Consumption-Behavior-and-Student-Economic-Assessment-via-Smart-Card-Data/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ## 📖 项目概述
@@ -265,6 +266,54 @@ def build_features(self, df):
 - [Streamlit官方文档](https://docs.streamlit.io/)
 - [Plotly可视化文档](https://plotly.com/python/)
 - [Scikit-learn机器学习文档](https://scikit-learn.org/stable/)
+
+## 🚀 CI/CD 工作流
+
+本项目配置了完整的 GitHub Actions 工作流，实现自动化构建、测试和部署：
+
+### 📋 工作流说明
+
+#### 1. CI (持续集成) - `.github/workflows/ci.yml`
+- **触发条件**: 推送到 `main`、`develop` 分支或创建 Pull Request
+- **测试矩阵**: Python 3.8, 3.9, 3.10, 3.11, 3.12
+- **检查项目**:
+  - ✅ 依赖安装
+  - ✅ 代码语法检查 (flake8)
+  - ✅ 模块导入测试
+  - ✅ Streamlit 应用语法验证
+  - ✅ 数据文件存在性检查
+
+#### 2. 部署 (Deploy) - `.github/workflows/deploy.yml`
+- **触发条件**: 推送到 `main` 分支或手动触发
+- **功能**:
+  - 📦 创建部署包
+  - ⬆️ 上传构建产物
+  - 📝 生成部署说明
+
+#### 3. 依赖检查 - `.github/workflows/dependency-check.yml`
+- **触发条件**: 每周一自动运行或手动触发
+- **功能**:
+  - 📊 检查过时的依赖包
+  - 🔒 安全漏洞扫描
+  - 📈 生成依赖状态报告
+
+### 🛠️ 本地开发工作流
+
+```bash
+# 1. 克隆项目
+git clone https://github.com/longzheng268/Analytics-of-Campus-Consumption-Behavior-and-Student-Economic-Assessment-via-Smart-Card-Data.git
+cd Analytics-of-Campus-Consumption-Behavior-and-Student-Economic-Assessment-via-Smart-Card-Data
+
+# 2. 安装依赖
+pip install -r requirements.txt
+
+# 3. 代码质量检查
+pip install flake8
+flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
+# 4. 运行应用
+streamlit run app.py
+```
 
 ## 📊 项目统计
 

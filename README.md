@@ -1,6 +1,16 @@
 # 🎓 校园消费行为分析与学生经济评估项目
 *Analytics of Campus Consumption Behavior and Student Economic Assessment via Smart Card Data*
 
+## 🚀 在线体验
+
+<div align="center">
+  <a href="https://analytics-campus-student-economic.streamlit.app/" target="_blank">
+    <img src="https://img.shields.io/badge/🔗_体验在线应用-Visit_Live_App-ff6b35?style=for-the-badge&logo=streamlit&logoColor=white" alt="Visit Live App" />
+  </a>
+</div>
+
+---
+
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.28%2B-red.svg)](https://streamlit.io/)
 [![CI/CD](https://github.com/longzheng268/Analytics-of-Campus-Consumption-Behavior-and-Student-Economic-Assessment-via-Smart-Card-Data/actions/workflows/ci.yml/badge.svg)](https://github.com/longzheng268/Analytics-of-Campus-Consumption-Behavior-and-Student-Economic-Assessment-via-Smart-Card-Data/actions/workflows/ci.yml)
